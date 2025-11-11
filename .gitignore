@@ -1,0 +1,20 @@
+# 데이터
+data/
+models/
+reports/
+!data/README.md   # 데이터 설명 파일만 추적
+
+# 캐시/체크포인트
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# 로그 및 출력
+*.log
+logs/
+checkpoints/
+
+# 환경설정
+.env
+*.egg-info/
+.DS_Store
