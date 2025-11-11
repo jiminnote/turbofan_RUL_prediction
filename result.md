@@ -32,8 +32,11 @@
 - RUL 범위: 0~355 cycles → 클리핑 후 0~125
 
 **운전조건 분석:**
-![alt text](image-1.png)
-![alt text](image.png)
+<img width="1010" height="569" alt="image" src="https://github.com/user-attachments/assets/ba8177cb-f0a8-463e-9aa3-1b487385006b" />
+<img width="783" height="743" alt="image" src="https://github.com/user-attachments/assets/45ed56a6-ad97-417b-8318-8701e0a66b15" />
+
+
+
 
 | 조건 | 유형 | 통계 | 처리 |
 |------|------|------|------|
@@ -42,12 +45,13 @@
 | op3 | 고정값 | 모두 0 (변동 없음) | **제거** |
 
 **센서 분석:**
-![alt text](image-2.png)
+<img width="933" height="839" alt="image" src="https://github.com/user-attachments/assets/35e15223-e293-4823-a240-84d55709325a" />
 - 고정값/분산 0 센서(11개): s1, s5, s6, s10, s16, s18, s19 등 → **제거후보**
 - 유효 센서(13개): s2, s3, s4, s7, s8, s9, s11, s12, s13, s14, s15, s17, s20, s21 → **사용**
 - 상관관계 높은 페어(중복 위험): (s2,s3), (s12,s13), (s13,s14) → 앙상블/PCA로 해소
 
-![alt text](image.png)
+<img width="475" height="143" alt="image" src="https://github.com/user-attachments/assets/2b279792-19bd-4f26-bea8-65ee11c527b1" />
+
  → **제거**
 ---
 
@@ -60,7 +64,8 @@
 ** RUL 레이블 생성**
 - 극단치 처리: 상한값 125로 클리핑 (분포 왜곡 방지)
 
-![alt text](image.png)
+<img width="591" height="468" alt="image" src="https://github.com/user-attachments/assets/d9800dd0-c21f-47cf-921e-68d428a4848a" />
+
 
 - 0~125 사이 구간: 데이터가 균등하게 분포
 - 125 이후: 데이터 수가 급격히 감소 → 희귀
@@ -78,6 +83,8 @@
 ---
 
 ## 슬라이드 4: LSTM 모델 설계 및 학습
+<img width="564" height="455" alt="image" src="https://github.com/user-attachments/assets/1c2c4a5a-2338-4b1b-a96d-3c9cc97d19ff" />
+
 
 **성능 (검증셋):**
 | 지표 | 값 | 해석 |
@@ -98,6 +105,10 @@
 ---
 
 ## 슬라이드 5: XGBoost 모델 및 특성 중요도
+<img width="989" height="590" alt="image" src="https://github.com/user-attachments/assets/aaeb04fb-6d50-4c28-b6ae-10bc4e9e9ce1" />
+- s11 센서가 가장 높은 중요도를 가지며, 모델 예측에 결정적으로 작용하고 있음.
+- s4, s9, s12 또한 일부 기여하고 있음.
+- 일부 센서 변수들(s5, s16 등)은 중요도가 거의 없음.
 
 **모델 설정:**
 - XGBRegressor(n_estimators=100, max_depth=5, learning_rate=0.1)
@@ -150,7 +161,8 @@ MAE ensemble     : 13.2981
 **배경:**
 - LSTM: 시계열 패턴 학습 강점, 일부 유닛 불안정
 - XGBoost: 특성 중요도 명확, 전체적으로 보수적
-![alt text](image.png)
+<img width="843" height="546" alt="image" src="https://github.com/user-attachments/assets/32f4d6bb-ae85-4295-b811-b543ccbb9323" />
+
 
 **앙상블 전략:**
 ```
@@ -172,7 +184,8 @@ y_ensemble = w × y_lstm + (1-w) × y_xgboost
 ---
 
 ## 슬라이드 8: 예지보전(CBM) 정책 분석
-![alt text](image-1.png)
+<img width="563" height="453" alt="image" src="https://github.com/user-attachments/assets/c1eedbd1-8dba-457c-b381-12bfcb5d5cb7" />
+
 
 - 예방 정비 비용 (C_pm)  
 - 고장 정비 비용 (C_fail)  
@@ -221,8 +234,47 @@ ELSE
   - 특징: 급격한 RUL 변화 또는 센서 이상 감지됨
 
 **산업 기준 대비:**
+```
+# CBM 정책 vs 예방정비 정책 비용 시뮬레이션
 
-![alt text](image.png)
+# # 보수적 시나리오 (낮은 비용 차이)
+# C_fail_low = 300
+# C_pm_low = 150
+# C_cbm_low = 80
+
+# 기본 시나리오 (중간값)
+C_fail = 500
+C_pm = 200
+C_cbm = 100
+
+# # 공격적 가정
+# C_fail_high = 800
+# C_pm_high = 300
+# C_cbm_high = 120
+
+threshold = 30
+
+
+# CBM 정책 비용
+cbm_policy_cost = np.sum([
+    prob_failure[i] * C_fail + (1 - prob_failure[i]) * C_cbm 
+    for i in range(len(prob_failure))
+]) / len(prob_failure)
+
+# 예방정비 정책 비용 (정기적으로 C_pm)
+pm_policy_cost = C_pm  # 모든 엔진에 동일하게 적용
+
+# 절감 비용 계산
+savings = (pm_policy_cost - cbm_policy_cost) / pm_policy_cost * 100
+
+print(f"CBM 정책 평균 비용: ${cbm_policy_cost:.2f}")
+print(f"예방정비 정책 비용: ${pm_policy_cost:.2f}")
+print(f"절감율: {savings:.1f}%")
+
+```
+CBM 정책 평균 비용: $126.22
+예방정비 정책 비용: $200.00
+절감율: 36.9%
 
 [비용 참고] 항공업계 정비 기준(ISO 13379, SAE standards)
 
