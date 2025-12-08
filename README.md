@@ -2,7 +2,7 @@
 
 잔존 수명 예측 기반 예지보전 시스템 구축 프로젝트  
 캐글 공개 데이터셋(C-MAPSS)을 활용한 시계열 기반 머신러닝 모델링
-
+[포트폴리오](https://www.canva.com/design/DAG6VPfi1V8/az-BmGZOqpGrYBh_L_1uRQ/edit?utm_content=DAG6VPfi1V8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 ## 프로젝트 개요
 
 항공기 터보팬 제트 엔진의 센서 데이터를 분석하여  
