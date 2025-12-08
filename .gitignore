@@ -1,8 +1,7 @@
 # 데이터
-data/
+CMaps/
 models/
-reports/
-!data/README.md   # 데이터 설명 파일만 추적
+
 
 # 캐시/체크포인트
 __pycache__/
@@ -11,7 +10,7 @@ __pycache__/
 
 # 로그 및 출력
 *.log
-logs/
+experiment_logs/
 checkpoints/
 
 # 환경설정
