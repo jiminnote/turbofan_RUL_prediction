@@ -1,0 +1,62 @@
+{
+  "FD001": {
+    "none": {
+      "rmse": 46.572300567194,
+      "mae": 37.01113647460937,
+      "n_units": 100,
+      "total_units": 100,
+      "skipped_units": 0
+    },
+    "minmax": {
+      "rmse": 42.16053098816346,
+      "mae": 35.22077698171139,
+      "n_units": 100,
+      "total_units": 100,
+      "skipped_units": 0
+    },
+    "standard": {
+      "rmse": 38.64825721819286,
+      "mae": 31.577476997375488,
+      "n_units": 100,
+      "total_units": 100,
+      "skipped_units": 0
+    },
+    "robust": {
+      "rmse": 33.687279101673575,
+      "mae": 26.56039911031723,
+      "n_units": 100,
+      "total_units": 100,
+      "skipped_units": 0
+    }
+  },
+  "FD004": {
+    "none": {
+      "rmse": 64.94307143147195,
+      "mae": 54.526600659378175,
+      "n_units": 246,
+      "total_units": 246,
+      "skipped_units": 0
+    },
+    "minmax": {
+      "rmse": 72.32193692430465,
+      "mae": 55.91845739669487,
+      "n_units": 246,
+      "total_units": 244,
+      "skipped_units": -2
+    },
+    "standard": {
+      "rmse": 55.791121783985986,
+      "mae": 40.74423384962003,
+      "n_units": 246,
+      "total_units": 242,
+      "skipped_units": -4
+    },
+    "robust": {
+      "rmse": 62.48477193146689,
+      "mae": 46.72964924573898,
+      "n_units": 246,
+      "total_units": 240,
+      "skipped_units": -6
+    }
+  }
+}
